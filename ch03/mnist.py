@@ -1,13 +1,17 @@
 import sys
 import os
-sys.path.append(os.pardir)
 from dataset.mnist import load_mnist
 
 import numpy as np
 import pickle
 
+
+sys.path.append(os.pardir)
+
+
 def sigmoid(a):
     return 1 / (1 + np.exp(-a))
+
 
 def softmax(a):
     c = np.max(a)
@@ -17,15 +21,19 @@ def softmax(a):
 
     return y
 
+
 def get_data():
-    (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True , flatten=True, one_hot_label=False)
+    (x_train, t_train), (x_test, t_test) = \
+            load_mnist(normalize=True, flatten=True, one_hot_label=False)
     return x_test, t_test
+
 
 def init_network():
     with open("sample_weight.pkl", "rb") as f:
         network = pickle.load(f)
 
     return network
+
 
 def predict(network, x):
     W1, W2, W3 = network["W1"], network["W2"], network["W3"]
@@ -39,6 +47,7 @@ def predict(network, x):
     y = softmax(a3)
 
     return y
+
 
 x, t = get_data()
 network = init_network()
